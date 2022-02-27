@@ -1,14 +1,36 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Pool;
 
 public class Road : MonoBehaviour
 {
+    public GameObject parentObj;
     public GameObject roadPrefab;
     public Vector3 lastPos;
     public float offset = 0.7071068f;
 
     private int roadCount = 0;
+    private ObjectPool<GameObject> roadObjPool;
+
+    private void Awake()
+    {
+        // Instantiate our object pool for Crystal GFX
+        this.roadObjPool = new ObjectPool<GameObject>(
+            createFunc: () => Instantiate(this.roadPrefab, parent: parentObj.transform),
+            actionOnGet: roadObj => {},
+            actionOnRelease: roadObj => {},
+            actionOnDestroy: roadObj => Destroy(roadObj.gameObject),
+            collectionCheck: true,
+            defaultCapacity: 10,
+            maxSize: 20
+        );
+    }
+
+    private void Start()
+    {
+        
+    }
 
     public void StartBuilding()
     {
@@ -31,8 +53,10 @@ public class Road : MonoBehaviour
         }
 
         // create a new block
-        GameObject g = Instantiate(roadPrefab, spawnPos, Quaternion.Euler(0, 45, 0));
-        Destroy(g, 10.0f);  // After 10 seconds, we can destroy the block
+        GameObject g = roadObjPool.Get();
+        g.transform.position = spawnPos;
+        g.transform.rotation = Quaternion.Euler(0, 45, 0);
+        StartCoroutine(destroyRoadObjectWithTimer(g, 10f));
 
         // save last position
         lastPos = g.transform.position;
@@ -41,5 +65,11 @@ public class Road : MonoBehaviour
 
         if (roadCount % 5 == 0)
             g.transform.GetChild(0).gameObject.SetActive(true);
+    }
+
+    private IEnumerator destroyRoadObjectWithTimer(GameObject roadObj, float timer)
+    {
+        yield return new WaitForSeconds(timer);
+        roadObjPool.Release(roadObj);
     }
 }

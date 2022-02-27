@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Pool;
 
 public class CharController : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class CharController : MonoBehaviour
     private bool walkingRight = true;
     private Animator anim;
     private GameManager gameManager;
+    private ObjectPool<GameObject> xtalGfxPool;
 
     // Use this for initialization
     void Awake()
@@ -23,6 +25,17 @@ public class CharController : MonoBehaviour
         this.anim = GetComponent<Animator>();
         // Define the game manager
         this.gameManager = FindObjectOfType<GameManager>();
+
+        // Instantiate our object pool for Crystal GFX
+        this.xtalGfxPool = new ObjectPool<GameObject>(
+            createFunc: () => Instantiate(this.crystalEffect),
+            actionOnGet: effect => effect.GetComponent<ParticleSystem>().Play(),
+            actionOnRelease: effect => {},
+            actionOnDestroy: effect => Destroy(effect.gameObject),
+            collectionCheck: true,
+            defaultCapacity: 5,
+            maxSize: 10
+        );
     }
 
     // This method is commonly used to control cameras
@@ -86,11 +99,20 @@ public class CharController : MonoBehaviour
             // Increase the score
             this.gameManager.IncreaseScore();
 
-            // Generate effects
-            GameObject effectObj = Instantiate(this.crystalEffect, this.rayStart.transform.position, Quaternion.identity);
-            // Destroy related objects
-            Destroy(effectObj, 2);
-            Destroy(c.gameObject);
+            // Instantiate GFX from pool
+            GameObject effectObj = xtalGfxPool.Get();
+            effectObj.transform.position = this.rayStart.transform.position;
+            effectObj.transform.rotation = Quaternion.identity;
+            // After effect is done, release the pool object
+            StartCoroutine(destroyXtalGfxWithTimer(effectObj, 2));
+            // Hide the crystal object now
+            c.gameObject.SetActive(false);
         }
+    }
+
+    private IEnumerator destroyXtalGfxWithTimer(GameObject effect, float timer)
+    {
+        yield return new WaitForSeconds(timer);
+        xtalGfxPool.Release(effect);
     }
 }
