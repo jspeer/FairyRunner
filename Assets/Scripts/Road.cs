@@ -1,8 +1,5 @@
-using System.Globalization;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Pool;
 
 public class Road : MonoBehaviour
 {
@@ -57,6 +54,7 @@ public class Road : MonoBehaviour
         g.transform.position = new Vector3(this.gameManager.roadLastPos.x + (Random.Range(0, 2) % 2 == 0 ? this.gameManager.RoadOffset : -this.gameManager.RoadOffset), this.gameManager.roadLastPos.y, this.gameManager.roadLastPos.z + this.gameManager.RoadOffset);
         // Rotate 45 degrees
         g.transform.rotation = Quaternion.Euler(0, 45, 0);
+        g.GetComponentInChildren<MeshRenderer>().material = this.gameManager.RoadMaterials[roadCount % this.gameManager.RoadMaterials.Count];
 
         // save last position
         this.gameManager.roadLastPos = g.transform.position;

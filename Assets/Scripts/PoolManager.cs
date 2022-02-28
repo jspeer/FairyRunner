@@ -1,7 +1,3 @@
-using System.ComponentModel;
-using System.Globalization;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -48,7 +44,7 @@ public class PoolManager : MonoBehaviour {
             },
             actionOnDestroy: roadObj => Destroy(roadObj.gameObject),
             collectionCheck: true,
-            defaultCapacity: 10,
+            defaultCapacity: 20,
             maxSize: maxRoadPoolSize
         );
 

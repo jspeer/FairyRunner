@@ -36,12 +36,16 @@ public class GameManager : MonoBehaviour
     public float InitialRoadBuildSpeed { get { return initialRoadBuildSpeed; } }
     [SerializeField] private float roadBuildSpeedFactor = .1f;
     public float RoadBuildSpeedFactor { get { return roadBuildSpeedFactor; } }
-    
+    [SerializeField] private List<Material> roadMaterials;
+    public List<Material> RoadMaterials { get { return roadMaterials; } }
+
     [Header("Character")]
     [SerializeField] float initialRunSpeed = 2f;
     public float InitialRunSpeed { get { return initialRunSpeed; } }
     [SerializeField] float runSpeedFactor = 0.1f;
     public float RunSpeedFactor { get { return runSpeedFactor; } }
+    [SerializeField] float deathHeight = -2f;
+    public float DeathHeight { get { return deathHeight; } }
 
     // private vars
     private float currentGameSpeed = 1f;
@@ -73,7 +77,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Return)) {
+        if (Input.GetKeyDown(KeyCode.Return) ^ Input.GetMouseButtonUp(1)) {
             StartGame();
         }
     }

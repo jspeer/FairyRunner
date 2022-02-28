@@ -1,7 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Pool;
 
 public class CharController : MonoBehaviour
 {
@@ -52,7 +50,7 @@ public class CharController : MonoBehaviour
     private void Update()
     {
         // Update the direction of the player movement
-        if (Input.GetKeyDown(KeyCode.Space)) {
+        if (Input.GetKeyDown(KeyCode.Space) ^ Input.GetMouseButtonDown(0)) {
             this.Switch();
         }
 
@@ -67,7 +65,7 @@ public class CharController : MonoBehaviour
         }
 
         // If we're falling, restart the game
-        if (this.transform.position.y < -2) {
+        if (this.transform.position.y < this.gameManager.DeathHeight) {
             this.gameManager.EndGame();
         }
     }
