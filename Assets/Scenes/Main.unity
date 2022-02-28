@@ -34,11 +34,11 @@ RenderSettings:
   m_SpotCookie: {fileID: 10001, guid: 0000000000000000e000000000000000, type: 0}
   m_DefaultReflectionMode: 0
   m_DefaultReflectionResolution: 128
-  m_ReflectionBounces: 1
+  m_ReflectionBounces: 2
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.17395882, g: 0.21751851, b: 0.29968974, a: 1}
+  m_IndirectSpecularColor: {r: 0.17695536, g: 0.22151253, b: 0.3037905, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -97,8 +97,8 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
-  m_LightingSettings: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: 97201f3ead5bc0a418cf1d93085d8486, type: 2}
+  m_LightingSettings: {fileID: 4890085278179872738, guid: 2b91d4ef782742d4fa8a3da8ad01634f, type: 2}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -638,7 +638,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_BoundingSphereOverride: {x: 9.33e-43, y: NaN, z: 0, w: -5.730468e+10}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
@@ -650,14 +650,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 705507993}
-  m_LocalRotation: {x: 0.4279545, y: -0.49064422, z: 0.46665782, w: 0.59862655}
+  m_LocalRotation: {x: 0.04395138, y: -0.7276953, z: 0.5874671, w: 0.35129806}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 76, y: -51, z: 35}
+  m_LocalEulerAnglesHint: {x: 62.359, y: -97.798, z: 48.748}
 --- !u!114 &705507996
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -837,7 +837,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.7075472, g: 0.6322418, b: 0.57071024, a: 0}
+  m_BackGroundColor: {r: 0.380785, g: 0.38351396, b: 0.4056604, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -920,7 +920,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
@@ -963,7 +963,6 @@ MonoBehaviour:
   gameStarted: 0
   mainCamera: {fileID: 963194227}
   cameraTarget: {fileID: 773587244}
-  score: 0
   scoreText: {fileID: 803697391}
   highScoreText: {fileID: 1614756325}
   gameSpeedIncreaseAmount: 0.1
@@ -1285,7 +1284,7 @@ MonoBehaviour:
   priority: 0
   blendDistance: 0
   weight: 1
-  sharedProfile: {fileID: 0}
+  sharedProfile: {fileID: 11400000, guid: 9b847153546cfe040a978a73017774cf, type: 2}
 --- !u!4 &1713189822
 Transform:
   m_ObjectHideFlags: 0
