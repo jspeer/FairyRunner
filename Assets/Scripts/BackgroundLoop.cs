@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BackgroundLoop : MonoBehaviour
@@ -8,6 +6,8 @@ public class BackgroundLoop : MonoBehaviour
 
     private void Awake()
     {
+        /** Singleton pattern for background music player **/
+
         // Prevent duplicating the music loop
         if (instance == null)
             instance = this;

@@ -4,18 +4,19 @@ using UnityEngine;
 
 public class FollowCam : MonoBehaviour
 {
-    public Transform target;  // Target position
+    private GameManager gameManager;
     private Vector3 offset;   // Offset to player
 
     void Awake()
     {
+        gameManager = FindObjectOfType<GameManager>();
         // Define player offset
-        this.offset = this.transform.position - this.target.position;
+        this.offset = this.transform.position - this.gameManager.CameraTarget.position;
     }
 
     private void LateUpdate()
     {
         // Move the camera
-        this.transform.position = this.target.position + this.offset;
+        this.transform.position = this.gameManager.CameraTarget.position + this.offset;
     }
 }

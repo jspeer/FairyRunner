@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,71 +6,65 @@ using UnityEngine.Pool;
 
 public class Road : MonoBehaviour
 {
-    public GameObject parentObj;
-    public GameObject roadPrefab;
-    public Vector3 lastPos;
-    public float offset = 0.7071068f;
-
-    private int roadCount = 0;
-    private ObjectPool<GameObject> roadObjPool;
+    public int roadCount = 0;
+    public int roadDestroyed = 0;
+    private GameManager gameManager;
+    private PoolManager poolManager;
+    private CharController charController;
 
     private void Awake()
     {
-        // Instantiate our object pool for Crystal GFX
-        this.roadObjPool = new ObjectPool<GameObject>(
-            createFunc: () => Instantiate(this.roadPrefab, parent: parentObj.transform),
-            actionOnGet: roadObj => {},
-            actionOnRelease: roadObj => {},
-            actionOnDestroy: roadObj => Destroy(roadObj.gameObject),
-            collectionCheck: true,
-            defaultCapacity: 10,
-            maxSize: 20
-        );
+        // Define the game manager
+        this.gameManager = FindObjectOfType<GameManager>();
+
+        // Get the pool manager
+        this.poolManager = this.gameManager.GetComponent<PoolManager>();
+
+        // Grab the character controller to obtain the run speed
+        this.charController = FindObjectOfType<CharController>();
     }
 
     private void Start()
     {
-        
+        for (int i = 0; i < this.gameManager.MaxInitialBlocks; i++) {
+            SpawnNewRoadPart();
+        }
     }
 
     public void StartBuilding()
     {
-        InvokeRepeating("CreateNewRoadPart", 1.0f, 0.5f);
+        StartCoroutine(CreateNewRoadPart());
     }
 
-    public void CreateNewRoadPart()
+    private IEnumerator CreateNewRoadPart()
     {
-        Debug.Log("Create new road part");
-
-        // Give a 50/50 chance to spawn left or right
-        Vector3 spawnPos = Vector3.zero;
-        float chance = Random.Range(0, 100);
-        if (chance < 50) {
-            // spawn left
-            spawnPos = new Vector3(lastPos.x + offset, lastPos.y, lastPos.z + offset);
-        } else {
-            // spawn right
-            spawnPos = new Vector3(lastPos.x - offset, lastPos.y, lastPos.z + offset);
+        while (true) {
+            // Clamp new speed to a minimum of 0
+            float newSpeed = Mathf.Max(0, this.gameManager.InitialRoadBuildSpeed - (this.charController.CurrentRunSpeed * this.gameManager.RoadBuildSpeedFactor));
+            // Spawn the part (cap the spawns to 100 -- hard limit for pooling)
+            if (roadCount - roadDestroyed < this.gameManager.GetComponent<PoolManager>().MaxRoadPoolSize)
+                SpawnNewRoadPart();
+            // Go to sleep
+            yield return new WaitForSeconds(newSpeed);
         }
+    }
 
-        // create a new block
-        GameObject g = roadObjPool.Get();
-        g.transform.position = spawnPos;
+    private void SpawnNewRoadPart()
+    {
+        // get an object from the pool
+        GameObject g = poolManager.roadObjPool.Get();
+        // Set direction to 50/50 (left/right) from last position
+        g.transform.position = new Vector3(this.gameManager.roadLastPos.x + (Random.Range(0, 2) % 2 == 0 ? this.gameManager.RoadOffset : -this.gameManager.RoadOffset), this.gameManager.roadLastPos.y, this.gameManager.roadLastPos.z + this.gameManager.RoadOffset);
+        // Rotate 45 degrees
         g.transform.rotation = Quaternion.Euler(0, 45, 0);
-        StartCoroutine(destroyRoadObjectWithTimer(g, 10f));
 
         // save last position
-        lastPos = g.transform.position;
+        this.gameManager.roadLastPos = g.transform.position;
 
         roadCount++;
 
-        if (roadCount % 5 == 0)
+        // Every 4 blocks, give a 50/50 chance to spawn a gem
+        if (roadCount % 4 == 0 && Random.Range(0, 2) % 2 == 0)
             g.transform.GetChild(0).gameObject.SetActive(true);
-    }
-
-    private IEnumerator destroyRoadObjectWithTimer(GameObject roadObj, float timer)
-    {
-        yield return new WaitForSeconds(timer);
-        roadObjPool.Release(roadObj);
     }
 }
