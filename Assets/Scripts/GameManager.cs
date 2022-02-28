@@ -50,9 +50,14 @@ public class GameManager : MonoBehaviour
     // private vars
     private float currentGameSpeed = 1f;
     public float CurrentGameSpeed { get { return currentGameSpeed; } }
+    private InputHandler inputHandler;
+    private UIHandler uiHandler;
 
     private void Awake()
     {
+        inputHandler = GetComponent<InputHandler>();
+        uiHandler = GetComponent<UIHandler>();
+
         this.scoreText.text = $"Score: {score.ToString()}";
         // Get high score
         this.highScoreText.text = $"Best: {GetHighScore().ToString()}";
