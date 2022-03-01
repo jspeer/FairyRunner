@@ -1,3 +1,4 @@
+using Microsoft.Win32.SafeHandles;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,7 +18,6 @@ public class GameManager : MonoBehaviour
     [Header("Score Overlay")]
     [SerializeField] private Text scoreText;
     [SerializeField] private Text highScoreText;
-    private int score;
 
     [Header("Mechanics")]
     [SerializeField] private float gameSpeedIncreaseAmount = 0.01f;
@@ -51,16 +51,10 @@ public class GameManager : MonoBehaviour
     private float currentGameSpeed = 1f;
     public float CurrentGameSpeed { get { return currentGameSpeed; } }
     private InputHandler inputHandler;
-    private UIHandler uiHandler;
 
     private void Awake()
     {
         inputHandler = GetComponent<InputHandler>();
-        uiHandler = GetComponent<UIHandler>();
-
-        this.scoreText.text = $"Score: {score.ToString()}";
-        // Get high score
-        this.highScoreText.text = $"Best: {GetHighScore().ToString()}";
     }
 
     private void Start()
@@ -97,22 +91,5 @@ public class GameManager : MonoBehaviour
     {
         this.gameStarted = false;
         SceneManager.LoadScene(0);
-    }
-
-    public void IncreaseScore()
-    {
-        this.score++;
-        this.scoreText.text = $"Score: {score.ToString()}";
-
-        if (this.score > GetHighScore()) {
-            PlayerPrefs.SetInt("Highscore", this.score);
-            this.highScoreText.text = $"Best: {GetHighScore().ToString()}";
-        }
-    }
-
-    public int GetHighScore()
-    {
-        int i = PlayerPrefs.GetInt("Highscore");
-        return i;
     }
 }

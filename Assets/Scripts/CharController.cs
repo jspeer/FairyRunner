@@ -12,6 +12,7 @@ public class CharController : MonoBehaviour
     private Animator anim;
     private GameManager gameManager;
     private PoolManager poolManager;
+    private ScoreManager scoreManager;
     private float currentRunSpeed;
 
     // Public methods
@@ -29,6 +30,8 @@ public class CharController : MonoBehaviour
         this.gameManager = FindObjectOfType<GameManager>();
         // Get the pool manager
         this.poolManager = FindObjectOfType<PoolManager>();
+        // Get the score manager
+        this.scoreManager = FindObjectOfType<ScoreManager>();
     }
 
     // This method is commonly used to control cameras
@@ -92,7 +95,7 @@ public class CharController : MonoBehaviour
     {
         if (c.tag == "Crystal") {
             // Increase the score
-            this.gameManager.IncreaseScore();
+            this.scoreManager.IncreaseScore();
 
             // Instantiate GFX from pool
             GameObject effectObj = this.poolManager.xtalGfxPool.Get();
