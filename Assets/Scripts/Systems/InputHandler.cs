@@ -18,9 +18,13 @@ public class InputHandler : MonoBehaviour
     {
         switch (gameManager.gameStarted) {
             case true:
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
                 this.playerInput.SwitchCurrentActionMap("Player");
                 break;
             case false:
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
                 this.playerInput.SwitchCurrentActionMap("UI");
                 break;
         }
