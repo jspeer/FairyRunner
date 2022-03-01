@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
@@ -50,18 +51,20 @@ public class GameManager : MonoBehaviour
     // private vars
     private float currentGameSpeed = 1f;
     public float CurrentGameSpeed { get { return currentGameSpeed; } }
-    private InputHandler inputHandler;
+    private PlayerInput playerInput;
 
     private void Awake()
     {
-        inputHandler = GetComponent<InputHandler>();
+        this.playerInput = GetComponent<PlayerInput>();
     }
 
     private void Start()
     {
+        // This is a main timer loop to increase the game speed and difficulty
         StartCoroutine(IncreaseGameSpeedByAmountAndTimer(this.gameSpeedIncreaseAmount, this.gameSpeedIncreaseTime));
     }
 
+    // This is a main timer loop to increase the game speed and difficulty
     private IEnumerator IncreaseGameSpeedByAmountAndTimer(float amount, float timer)
     {
         while (true) {
@@ -76,8 +79,13 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Return) ^ Input.GetMouseButtonUp(1)) {
-            StartGame();
+        switch (this.gameStarted) {
+            case true:
+                playerInput.SwitchCurrentActionMap("Player");
+                return;
+            case false:
+                playerInput.SwitchCurrentActionMap("UI");
+                return;
         }
     }
 

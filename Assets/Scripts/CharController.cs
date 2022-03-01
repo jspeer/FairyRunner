@@ -34,13 +34,13 @@ public class CharController : MonoBehaviour
         this.scoreManager = FindObjectOfType<ScoreManager>();
     }
 
-    // This method is commonly used to control cameras
     private void FixedUpdate()
     {
         if (!this.gameManager.gameStarted) {
             this.currentRunSpeed = this.gameManager.InitialRunSpeed;
             return;
         } else {
+            // One shot call to co-routine on physics update to increase the run speed
             StartCoroutine(this.IncreaseRunSpeed());
             this.anim.SetTrigger("gameStarted");
         }
@@ -52,11 +52,7 @@ public class CharController : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        // Update the direction of the player movement
-        if (Input.GetKeyDown(KeyCode.Space) ^ Input.GetMouseButtonDown(0)) {
-            this.Switch();
-        }
-
+        // TODO: MAKE RAY CASTING AN EVENT INSTEAD OF PART OF THE UPDATE() FUNCTION
         // Using ray casting, if there is no physics object below us { ... }
         RaycastHit hit;
         if (!Physics.Raycast(this.rayStart.position, -this.transform.up, out hit, Mathf.Infinity)) {
@@ -74,7 +70,7 @@ public class CharController : MonoBehaviour
     }
 
     // Switch the direction of the character
-    private void Switch()
+    public void Switch() // switched to public so input handler could access this method
     {
         if (!this.gameManager.gameStarted) {
             return;
@@ -102,7 +98,7 @@ public class CharController : MonoBehaviour
             effectObj.transform.position = this.rayStart.transform.position;
             effectObj.transform.rotation = Quaternion.identity;
             // After effect is done, release the pool object
-            StartCoroutine(this.destroyXtalGfxWithTimer(effectObj, 2));
+            StartCoroutine(this.destroyXtalGfxWithTimer(effectObj, 2)); // hard coded timer value for destroying crystal gfx, this is fine because the duration of the graphic is 5 seconds, but the visible part is only about 2 seconds
             // Hide the crystal object now
             c.gameObject.SetActive(false);
         }
