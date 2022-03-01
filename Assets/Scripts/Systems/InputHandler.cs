@@ -4,12 +4,26 @@ using UnityEngine.InputSystem;
 public class InputHandler : MonoBehaviour
 {
     private GameManager gameManager;
+    private PlayerInput playerInput;
     private CharController charController;
 
     private void Awake()
     {
         gameManager = FindObjectOfType<GameManager>();
+        playerInput = gameManager.GetComponent<PlayerInput>();
         charController = FindObjectOfType<CharController>();
+    }
+
+    private void Update()
+    {
+        switch (gameManager.gameStarted) {
+            case true:
+                this.playerInput.SwitchCurrentActionMap("Player");
+                break;
+            case false:
+                this.playerInput.SwitchCurrentActionMap("UI");
+                break;
+        }
     }
 
     public void StartGame(InputAction.CallbackContext context)

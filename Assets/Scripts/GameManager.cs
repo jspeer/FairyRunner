@@ -1,10 +1,8 @@
-using Microsoft.Win32.SafeHandles;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
@@ -51,11 +49,10 @@ public class GameManager : MonoBehaviour
     // private vars
     private float currentGameSpeed = 1f;
     public float CurrentGameSpeed { get { return currentGameSpeed; } }
-    private PlayerInput playerInput;
 
     private void Awake()
     {
-        this.playerInput = GetComponent<PlayerInput>();
+
     }
 
     private void Start()
@@ -79,20 +76,12 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        switch (this.gameStarted) {
-            case true:
-                playerInput.SwitchCurrentActionMap("Player");
-                return;
-            case false:
-                playerInput.SwitchCurrentActionMap("UI");
-                return;
-        }
+
     }
 
     public void StartGame()
     {
         this.gameStarted = true;
-        FindObjectOfType<Road>().StartBuilding();
     }
 
     public void EndGame()

@@ -28,9 +28,11 @@ public class Road : MonoBehaviour
         }
     }
 
-    public void StartBuilding()
+    private void Update()
     {
-        StartCoroutine(CreateNewRoadPart());
+        if (this.gameManager.gameStarted) {
+            StartCoroutine(CreateNewRoadPart());
+        }
     }
 
     private IEnumerator CreateNewRoadPart()
