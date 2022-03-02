@@ -1,3 +1,4 @@
+using System.Threading;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Events;
@@ -14,6 +15,8 @@ public class InputHandler : MonoBehaviour
 
     private void Awake()
     {
+        InputSystem.settings.updateMode = InputSettings.UpdateMode.ProcessEventsInDynamicUpdate;
+
         gameManager = FindObjectOfType<GameManager>();
         playerInput = gameManager.GetComponent<PlayerInput>();
         charController = FindObjectOfType<CharController>();
@@ -44,9 +47,27 @@ public class InputHandler : MonoBehaviour
         this.gameManager.StartGame();
     }
 
-    public void PauseGame(InputAction.CallbackContext context)
+    public void PauseGameEvent(InputAction.CallbackContext context)
     {
+        this.PauseGame();
+    }
 
+    public void PauseGame()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        this.playerInput.SwitchCurrentActionMap("PausedGame");
+
+        this.gameManager.gameState = GameState.Paused;
+        this.gameManager.gameStateEvent.Invoke(GameState.Paused);
+    }
+
+    // Input handler event triggered
+    public void ResumeGameEvent(InputAction.CallbackContext context)
+    {
+        this.GameStarted(true);
+        this.gameManager.gameState = GameState.Playing;
+        this.gameManager.gameStateEvent.Invoke(this.gameManager.gameState);
     }
 
     public void HideAllMenus(InputAction.CallbackContext context)

@@ -233,7 +233,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e72bcc44bfd2fbe4caa3432f799e6487, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rayStart: {fileID: 1217972523}
 --- !u!114 &1143064641353816359
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -258,6 +257,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da3d3ffec782e814b99b5990ec4f1f33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  physicsRayStart: {fileID: 1217972523}
+  gameplayState: 1
+  charPhysicsEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &2935161440302794488 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 45972506425061065, guid: 977a3b48ffcdac64e866011a5e9b0307, type: 3}

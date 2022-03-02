@@ -4,6 +4,16 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Events;
 
+public enum GameState {
+    MainMenu,
+    Playing,
+    Paused,
+    End
+}
+
+[System.Serializable]
+public class GameStateEvent : UnityEvent<GameState> { }
+
 [System.Serializable]
 public class GameStarted : UnityEvent<bool> { }
 
@@ -53,21 +63,47 @@ public class GameManager : MonoBehaviour
     public float CurrentGameSpeed { get { return currentGameSpeed; } }
     public GameStarted gameStartedEvent;
     public TimerTick timerTickEvent;
+    public GameStateEvent gameStateEvent;
+    public GameState gameState;
 
     private void Awake()
     {
         // Construct our event systems
-        if (gameStartedEvent == null)
-            gameStartedEvent = new GameStarted();
+        if (this.gameStartedEvent == null)
+            this.gameStartedEvent = new GameStarted();
 
-        if (timerTickEvent == null)
-            timerTickEvent = new TimerTick();
+        if (this.timerTickEvent == null)
+            this.timerTickEvent = new TimerTick();
+
+        if (this.gameStateEvent == null)
+            this.gameStateEvent = new GameStateEvent();
+
+        this.gameState = GameState.MainMenu;
+    }
+
+    private void Update()
+    {
+        List<GameState> validTimeScaleStates = new List<GameState>{
+            GameState.Paused,
+            GameState.Playing
+        };
+
+        if (validTimeScaleStates.Contains(this.gameState)) {
+            switch (this.gameState) {
+                case GameState.Paused:
+                    if (Time.timeScale != 0) Time.timeScale = 0;
+                    break;
+                case GameState.Playing:
+                    if (Time.timeScale == 0) Time.timeScale = 1;
+                    break;
+            }
+        }
     }
 
     private void Start()
     {
         // This is a main timer loop to increase the game speed and difficulty
-        StartCoroutine(IncreaseGameSpeedByAmountAndTimer(this.gameSpeedIncreaseAmount, this.gameSpeedIncreaseTime));
+        StartCoroutine(this.IncreaseGameSpeedByAmountAndTimer(this.gameSpeedIncreaseAmount, this.gameSpeedIncreaseTime));
     }
 
     // This is a main timer loop to increase the game speed and difficulty
@@ -76,10 +112,10 @@ public class GameManager : MonoBehaviour
         while (true) {
             yield return new WaitForSeconds(timer);
             if (this.gameStarted) {
-                currentGameSpeed += amount;
-                timerTickEvent.Invoke();
+                this.currentGameSpeed += amount;
+                this.timerTickEvent.Invoke();
             } else {
-                currentGameSpeed = gameSpeedStartValue;
+                this.currentGameSpeed = this.gameSpeedStartValue;
             }
         }
     }
@@ -87,13 +123,17 @@ public class GameManager : MonoBehaviour
     public void StartGame()
     {
         this.gameStarted = true;
-        gameStartedEvent.Invoke(this.gameStarted);
+        this.gameState = GameState.Playing;
+        this.gameStateEvent.Invoke(this.gameState);
+        this.gameStartedEvent.Invoke(this.gameStarted);
     }
 
     public void EndGame()
     {
         this.gameStarted = false;
-        gameStartedEvent.Invoke(this.gameStarted);
+        this.gameState = GameState.End;
+        this.gameStateEvent.Invoke(this.gameState);
+        this.gameStartedEvent.Invoke(this.gameStarted);
         SceneManager.LoadScene(0);
     }
 }
