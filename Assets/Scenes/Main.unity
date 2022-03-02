@@ -1022,7 +1022,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 3.4e-44, z: 0, w: -0.0000000018242474}
+  m_BoundingSphereOverride: {x: 0, y: -4.175689e+11, z: 7.26e-43, w: -1.7175413e+10}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
@@ -1502,7 +1502,7 @@ MonoBehaviour:
     m_ActionName: PausedGame/Point[/Mouse/position]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
-  m_DefaultActionMap: d5e7d302-7ea5-46d2-99fa-e1cb775c6cbd
+  m_DefaultActionMap: UI
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!114 &1013855601
