@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class Road : MonoBehaviour
 {
+    [SerializeField] int gemSpawnFrequency = 4;
+    [SerializeField, Range(0.01f, 1.00f)] float gemSpawnChance = .5f;
     public int roadCount = 0;
     public int roadDestroyed = 0;
     private GameManager gameManager;
@@ -64,7 +66,9 @@ public class Road : MonoBehaviour
         roadCount++;
 
         // Every 4 blocks, give a 50/50 chance to spawn a gem
-        if (roadCount % 4 == 0 && Random.Range(0, 2) % 2 == 0)
+        float[] weights = {this.gemSpawnChance, Mathf.Abs(1-this.gemSpawnChance)};
+
+        if (roadCount % this.gemSpawnFrequency == 1 && WeightedRandom.GetRandomWeightedIndex(weights) == 0)
             g.transform.GetChild(0).gameObject.SetActive(true);
     }
 }

@@ -1,22 +1,31 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Events;
+
+[System.Serializable]
+public class PlayerClicked : UnityEvent { }
 
 public class InputHandler : MonoBehaviour
 {
     private GameManager gameManager;
     private PlayerInput playerInput;
     private CharController charController;
+    public PlayerClicked playerClickedEvent;
 
     private void Awake()
     {
         gameManager = FindObjectOfType<GameManager>();
         playerInput = gameManager.GetComponent<PlayerInput>();
         charController = FindObjectOfType<CharController>();
+        gameManager.gameStartedEvent.AddListener(this.GameStarted);
+
+        if (playerClickedEvent == null)
+            playerClickedEvent = new PlayerClicked();
     }
 
-    private void Update()
+    private void GameStarted(bool gameStartedBool)
     {
-        switch (gameManager.gameStarted) {
+        switch (gameStartedBool) {
             case true:
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
@@ -32,11 +41,21 @@ public class InputHandler : MonoBehaviour
 
     public void StartGame(InputAction.CallbackContext context)
     {
-        gameManager.StartGame();
+        this.gameManager.StartGame();
+    }
+
+    public void PauseGame(InputAction.CallbackContext context)
+    {
+
+    }
+
+    public void HideAllMenus(InputAction.CallbackContext context)
+    {
+        
     }
 
     public void PlayerClicked(InputAction.CallbackContext context)
     {
-        charController.Switch();
+        this.playerClickedEvent.Invoke();
     }
 }

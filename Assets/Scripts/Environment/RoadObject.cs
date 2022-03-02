@@ -11,7 +11,7 @@ public class RoadObject : MonoBehaviour
         this.poolManager = this.gameManager.GetComponent<PoolManager>();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         Vector2 screenPosition = gameManager.MainCamera.WorldToScreenPoint(transform.position);
         if (screenPosition.y <= gameManager.OffScreenYPos) {

@@ -2,8 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
-using UnityEngine.InputSystem;
+using UnityEngine.Events;
+
+[System.Serializable]
+public class GameStarted : UnityEvent<bool> { }
+
+[System.Serializable]
+public class TimerTick : UnityEvent { }
 
 public class GameManager : MonoBehaviour
 {
@@ -15,14 +20,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Transform cameraTarget;
     public Transform CameraTarget { get { return cameraTarget; } }
 
-    [Header("Score Overlay")]
-    [SerializeField] private Text scoreText;
-    [SerializeField] private Text highScoreText;
-
     [Header("Mechanics")]
+    [SerializeField] private float gameSpeedStartValue = 1f;
     [SerializeField] private float gameSpeedIncreaseAmount = 0.01f;
     [SerializeField] private float gameSpeedIncreaseTime = 0.5f;
-    public float GameSpeedTimer { get { return gameSpeedIncreaseTime; } }
 
     [Header("Road")]
     [SerializeField] public Vector3 roadLastPos;
@@ -50,10 +51,17 @@ public class GameManager : MonoBehaviour
     // private vars
     private float currentGameSpeed = 1f;
     public float CurrentGameSpeed { get { return currentGameSpeed; } }
+    public GameStarted gameStartedEvent;
+    public TimerTick timerTickEvent;
 
     private void Awake()
     {
+        // Construct our event systems
+        if (gameStartedEvent == null)
+            gameStartedEvent = new GameStarted();
 
+        if (timerTickEvent == null)
+            timerTickEvent = new TimerTick();
     }
 
     private void Start()
@@ -69,25 +77,23 @@ public class GameManager : MonoBehaviour
             yield return new WaitForSeconds(timer);
             if (this.gameStarted) {
                 currentGameSpeed += amount;
+                timerTickEvent.Invoke();
             } else {
-                currentGameSpeed = 1f;
+                currentGameSpeed = gameSpeedStartValue;
             }
         }
-    }
-
-    private void Update()
-    {
-
     }
 
     public void StartGame()
     {
         this.gameStarted = true;
+        gameStartedEvent.Invoke(this.gameStarted);
     }
 
     public void EndGame()
     {
         this.gameStarted = false;
+        gameStartedEvent.Invoke(this.gameStarted);
         SceneManager.LoadScene(0);
     }
 }

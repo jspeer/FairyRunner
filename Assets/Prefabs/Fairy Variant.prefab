@@ -121,8 +121,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1217972522}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.25, z: 0}
-  m_LocalScale: {x: 0.01, y: 0.25, z: 0.01}
+  m_LocalPosition: {x: 0, y: 0.1, z: 0}
+  m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 659461436}
@@ -182,7 +182,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3960926973377682650, guid: 977a3b48ffcdac64e866011a5e9b0307, type: 3}
       propertyPath: m_Name
-      value: Fairy
+      value: Fairy Variant
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 977a3b48ffcdac64e866011a5e9b0307, type: 3}
@@ -234,6 +234,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rayStart: {fileID: 1217972523}
+--- !u!114 &1143064641353816359
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2224936681696064747}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99abd0d897feaea40937d220a1531bf4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2176855225024397831
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2224936681696064747}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da3d3ffec782e814b99b5990ec4f1f33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &2935161440302794488 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 45972506425061065, guid: 977a3b48ffcdac64e866011a5e9b0307, type: 3}
