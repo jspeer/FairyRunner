@@ -1,11 +1,12 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class UIHandler : MonoBehaviour
 {
     [Header("Score Overlay")]
-    [SerializeField] private Text scoreText;
-    [SerializeField] private Text highScoreText;
+    [SerializeField] private TextMeshProUGUI scoreText;
+    [SerializeField] private TextMeshProUGUI highScoreText;
     private ScoreManager scoreManager;
 
     private void Awake()
@@ -22,6 +23,6 @@ public class UIHandler : MonoBehaviour
     {
         this.scoreText.text = $"Score: {scoreManager.Score.ToString()}";
         // Get high score
-        this.highScoreText.text = $"Best: {scoreManager.HighScore.ToString()}";
+        this.highScoreText.text = $"High Score: {scoreManager.HighScore.ToString()}";
     }
 }
